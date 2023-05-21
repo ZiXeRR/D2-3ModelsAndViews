@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.shortcuts import reverse
 
 
 class Author(models.Model):
@@ -44,6 +45,9 @@ class Post(models.Model):
     title = models.CharField(max_length=128)
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
+    slug = models.SlugField(max_length=128, unique=True)
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'slug':self.slug})
 
     def like(self):
         self.rating += 1
